@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>المرافق | الإصدار الأسطوري</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05070f; --bg2:#080d1c;
+  --panel:rgba(255,255,255,.045); --panel-hi:rgba(255,255,255,.08);
+  --line:rgba(255,255,255,.09); --line-hi:rgba(255,255,255,.18);
+  --txt:#eef2ff; --muted:#8b96b4; --muted2:#5a6480;
+  --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444; --info:#38bdf8;
+  --r:20px;
+  --shadow:0 20px 50px rgba(0,0,0,.55);
+  --glow:0 0 40px rgba(80,140,255,.25);
+}
+html,body{height:100%}
+body{
+  font-family:'Tajawal',system-ui,-apple-system,sans-serif;
+  color:var(--txt);background:var(--bg);
+  min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(1200px 600px at 90% -15%, rgba(56,110,255,.20), transparent 60%),
+    radial-gradient(900px 500px at 0% 5%, rgba(0,220,180,.10), transparent 60%),
+    radial-gradient(700px 400px at 50% 110%, rgba(160,80,255,.10), transparent 60%);
+}
+button,input,select{font-family:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+
+/* ================= HEADER ================= */
+.hdr{
+  position:sticky;top:0;z-index:60;
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  background:linear-gradient(180deg,rgba(5,7,15,.94),rgba(5,7,15,.68));
+  border-bottom:1px solid var(--line);
+}
+.hdr-in{
+  max-width:1400px;margin:0 auto;padding:12px 18px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.logo{
+  width:44px;height:44px;border-radius:13px;display:grid;place-items:center;
+  font-size:21px;background:linear-gradient(140deg,#1e2b5e,#0b1228);
+  border:1px solid var(--line-hi);box-shadow:var(--glow);
+  position:relative;overflow:hidden;
+}
+.logo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.22) 50%,transparent 70%);
+  transform:translateX(-100%);animation:shine 5s infinite;
+}
+@keyframes shine{0%,75%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.brand h1{font-size:15.5px;font-weight:900;letter-spacing:-.3px}
+.brand p{font-size:10.5px;color:var(--muted);margin-top:2px}
+
+/* --- Date/Time Widget --- */
+.dtwidget{
+  display:flex;gap:8px;align-items:center;
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015));
+  border:1px solid var(--line);border-radius:14px;padding:7px 12px;
+  margin-inline-start:auto;flex-wrap:wrap;
+}
+.dtwidget .dt-cell{
+  display:flex;align-items:center;gap:6px;padding:0 8px;
+  border-inline-end:1px solid var(--line);
+}
+.dtwidget .dt-cell:last-child{border-inline-end:none}
+.dtwidget .dt-ic{font-size:14px;opacity:.85}
+.dtwidget .dt-txt{font-size:11.5px;font-weight:700;color:var(--txt);line-height:1.35}
+.dtwidget .dt-txt small{display:block;font-size:9.5px;color:var(--muted);font-weight:600}
+.dtwidget .time{font-variant-numeric:tabular-nums;font-size:14px;font-weight:800;color:#a8b8e0;letter-spacing:.5px}
+@media(max-width:760px){
+  .dtwidget .dt-cell{padding:0 5px}
+  .dtwidget .dt-txt{font-size:10.5px}
+}
+
+.hdr-actions{display:flex;gap:8px;flex-shrink:0}
+.icobtn{
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:18px;
+  background:var(--panel);border:1px solid var(--line);transition:.22s;
+  position:relative;
+}
+.icobtn:hover{background:var(--panel-hi);transform:translateY(-2px);
+  border-color:var(--line-hi);box-shadow:0 10px 25px rgba(0,0,0,.4)}
+.icobtn.locked::after{
+  content:'🔒';position:absolute;top:-5px;inset-inline-end:-5px;font-size:11px;
+  background:#0a1024;border:1px solid var(--line-hi);border-radius:50%;
+  width:18px;height:18px;display:grid;place-items:center;
+}
+
+/* ================= DOCK (Tabs) ================= */
+.dock-wrap{
+  position:sticky;top:71px;z-index:55;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  background:linear-gradient(180deg,rgba(6,9,20,.95),rgba(6,9,20,.72));
+  border-bottom:1px solid var(--line);
+}
+.dock{
+  max-width:1400px;margin:0 auto;
+  display:flex;gap:2px;padding:10px 16px;overflow-x:auto;
+  scroll-behavior:smooth;
+}
+.dock::-webkit-scrollbar{height:4px}
+.dock::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:99px}
+.dock::-webkit-scrollbar-track{background:transparent}
+
+.dock-item{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:9px 13px;border-radius:14px;
+  min-width:76px;flex-shrink:0;
+  transition:.24s;position:relative;
+  color:var(--muted);
+}
+.dock-item:hover{background:var(--panel-hi);color:var(--txt);transform:translateY(-2px)}
+.dock-item.on{
+  background:linear-gradient(160deg,rgba(79,124,255,.18),rgba(79,124,255,.05));
+  color:var(--txt);
+}
+.dock-item.on::after{
+  content:'';position:absolute;bottom:-2px;inset-inline:22%;height:3px;
+  border-radius:99px 99px 0 0;
+  background:var(--c,var(--info));
+  box-shadow:0 0 14px var(--c,var(--info));
+}
+.di-icon{
+  width:34px;height:34px;border-radius:11px;display:grid;place-items:center;
+  font-size:19px;
+  background:color-mix(in srgb,var(--c,#4f7cff) 14%,transparent);
+  border:1px solid color-mix(in srgb,var(--c,#4f7cff) 22%,transparent);
+  transition:.24s;
+}
+.dock-item.on .di-icon{
+  background:color-mix(in srgb,var(--c,#4f7cff) 26%,transparent);
+  border-color:color-mix(in srgb,var(--c,#4f7cff) 45%,transparent);
+  box-shadow:0 0 22px color-mix(in srgb,var(--c,#4f7cff) 30%,transparent);
+  transform:scale(1.05);
+}
+.di-label{font-size:10.5px;font-weight:700;white-space:nowrap}
+@media(max-width:600px){
+  .dock{gap:0;padding:8px 10px}
+  .dock-item{min-width:66px;padding:8px 9px}
+  .di-icon{width:30px;height:30px;font-size:17px}
+  .di-label{font-size:9.5px}
+}
+
+/* ================= MAIN ================= */
+main{max-width:1400px;margin:0 auto;padding:22px 18px 80px}
+.page{display:none;animation:fade .4s ease}
+.page.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ================= SUMMARY ================= */
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.scard{
+  background:linear-gradient(160deg,var(--panel-hi),rgba(255,255,255,.01));
+  border:1px solid var(--line);border-radius:var(--r);padding:16px;
+  position:relative;overflow:hidden;transition:.25s;
+}
+.scard::before{
+  content:'';position:absolute;top:0;bottom:0;inset-inline-start:0;width:4px;
+  background:var(--c,#4f7cff);box-shadow:0 0 20px var(--c);
+}
+.scard::after{
+  content:'';position:absolute;top:-40%;inset-inline-end:-20%;
+  width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle,var(--c,#4f7cff),transparent 70%);
+  opacity:.14;filter:blur(20px);pointer-events:none;
+}
+.scard:hover{transform:translateY(-3px);border-color:var(--line-hi);box-shadow:var(--shadow)}
+.scard span{font-size:11.5px;color:var(--muted);display:block;margin-bottom:9px;font-weight:600}
+.scard b{font-size:22px;font-weight:900;letter-spacing:-.5px}
+.scard b small{font-size:11px;color:var(--muted);font-weight:600;margin-inline-start:5px}
+.mini{height:5px;border-radius:99px;background:rgba(255,255,255,.08);margin-top:11px;overflow:hidden}
+.mini i{display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,#22c55e,#4ade80);transition:width .6s ease}
+@media(max-width:760px){
+  .summary{grid-template-columns:repeat(2,1fr);gap:10px}
+  .scard{padding:13px}
+  .scard b{font-size:18px}
+}
+
+/* ================= DASHBOARD TILES ================= */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.tile{
+  position:relative;overflow:hidden;cursor:pointer;
+  background:linear-gradient(160deg,var(--panel-hi),rgba(255,255,255,.01));
+  border:1px solid var(--line);border-radius:var(--r);padding:16px;
+  transition:.3s cubic-bezier(.3,.9,.3,1);
+}
+.tile::before{
+  content:'';position:absolute;top:0;inset-inline:0;height:3px;background:var(--c);
+  box-shadow:0 0 20px var(--c)
+}
+.tile::after{
+  content:'';position:absolute;top:-50%;inset-inline-end:-30%;width:180px;height:180px;
+  border-radius:50%;background:var(--c);opacity:.09;filter:blur(45px);pointer-events:none;
+}
+.tile:hover{transform:translateY(-5px);border-color:var(--line-hi);box-shadow:var(--shadow)}
+.tile-top{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.tile-ico{
+  width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-size:20px;
+  background:color-mix(in srgb,var(--c) 20%,transparent);
+  border:1px solid color-mix(in srgb,var(--c) 40%,transparent);
+  box-shadow:0 0 22px color-mix(in srgb,var(--c) 28%,transparent);
+}
+.tile-name h3{font-size:14.5px;font-weight:800}
+.tile-name small{font-size:10.5px;color:var(--muted)}
+.tile-amount{font-size:23px;font-weight:900;letter-spacing:-.6px;margin-bottom:4px}
+.tile-amount small{font-size:11px;color:var(--muted);font-weight:600;margin-inline-start:4px}
+.tile-sub{font-size:11px;color:var(--muted);font-weight:600;margin-bottom:11px}
+.tile-bar{height:6px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.tile-bar i{display:block;height:100%;border-radius:99px;transition:.6s}
+
+/* ================= UTILITY HERO ================= */
+.uhero{
+  position:relative;overflow:hidden;
+  background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.012));
+  border:1px solid var(--line);border-radius:24px;padding:24px;
+  margin-bottom:22px;box-shadow:var(--shadow);
+}
+.uhero::before{
+  content:'';position:absolute;top:-100px;inset-inline-end:-100px;width:400px;height:400px;
+  border-radius:50%;background:var(--c);opacity:.15;filter:blur(80px);pointer-events:none;
+}
+.uhero::after{
+  content:'';position:absolute;bottom:-80px;inset-inline-start:-80px;width:300px;height:300px;
+  border-radius:50%;background:var(--c);opacity:.08;filter:blur(70px);pointer-events:none;
+}
+.uhero-in{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;
+}
+@media(max-width:760px){
+  .uhero{padding:18px;border-radius:20px}
+  .uhero-in{grid-template-columns:1fr;gap:18px}
+}
+
+/* ================= DISK (Circular Infographic) ================= */
+.disk-wrap{position:relative;width:230px;height:230px;flex-shrink:0}
+@media(max-width:760px){.disk-wrap{width:180px;height:180px;margin:0 auto}}
+.disk-svg{width:100%;height:100%;display:block;overflow:visible;position:relative;z-index:2}
+.disk-center{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  pointer-events:none;z-index:3;
+}
+.disk-center .dc-month{
+  font-size:15px;font-weight:900;color:#fff;letter-spacing:-.3px;
+  margin-bottom:2px;
+}
+.disk-center .dc-year{
+  font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.5px;
+  margin-bottom:9px;
+}
+.disk-center .dc-pct{
+  font-size:36px;font-weight:900;letter-spacing:-1.5px;line-height:1;
+  background:linear-gradient(140deg,#fff,var(--c));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.disk-center .dc-pct small{font-size:13px;-webkit-text-fill-color:var(--muted);font-weight:700}
+.disk-center .dc-sub{
+  font-size:10.5px;color:var(--muted);font-weight:600;margin-top:6px;
+}
+@media(max-width:760px){
+  .disk-center .dc-pct{font-size:30px}
+  .disk-center .dc-month{font-size:13px}
+}
+
+/* ================= HERO INFO (right side) ================= */
+.hero-info{min-width:0}
+.hero-title{
+  font-size:26px;font-weight:900;letter-spacing:-.5px;
+  display:flex;align-items:center;gap:10px;margin-bottom:4px;
+}
+.hero-title .hi-ic{font-size:28px}
+.hero-sub{font-size:12.5px;color:var(--muted);font-weight:600;margin-bottom:16px}
+
+.trend{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:9px 15px;border-radius:13px;
+  font-weight:800;font-size:13px;
+  border:1px solid transparent;margin-bottom:14px;
+}
+.trend.up{background:rgba(239,68,68,.13);color:#f87171;border-color:rgba(239,68,68,.32)}
+.trend.down{background:rgba(34,197,94,.13);color:#4ade80;border-color:rgba(34,197,94,.32)}
+.trend.stable{background:rgba(245,158,11,.13);color:#fbbf24;border-color:rgba(245,158,11,.32)}
+.trend.none{background:rgba(255,255,255,.06);color:var(--muted);border-color:var(--line)}
+.trend .tr-arrow{font-size:17px;line-height:1;display:inline-block}
+.trend.up .tr-arrow{animation:bounceUp 1.6s ease-in-out infinite}
+.trend.down .tr-arrow{animation:bounceDown 1.6s ease-in-out infinite}
+@keyframes bounceUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes bounceDown{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+.trend .tr-pct{font-size:11.5px;opacity:.85;font-weight:700}
+
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+@media(max-width:480px){.kpis{grid-template-columns:repeat(3,1fr);gap:7px}}
+.kpi{
+  background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:13px;
+  padding:11px 12px;
+}
+.kpi span{font-size:10.5px;color:var(--muted);font-weight:600;display:block;margin-bottom:5px}
+.kpi b{font-size:15px;font-weight:900;letter-spacing:-.3px}
+.kpi b small{font-size:10px;color:var(--muted);font-weight:600;margin-inline-start:2px}
+
+/* ================= YEAR BARS ================= */
+.ybars-wrap{margin-bottom:22px}
+.ybars-title{
+  display:flex;align-items:center;gap:9px;margin-bottom:14px;
+  font-size:14.5px;font-weight:800;
+}
+.ybars-title em{font-style:normal;font-size:11px;color:var(--muted);font-weight:600}
+.ybars{
+  display:grid;grid-template-columns:repeat(12,1fr);gap:6px;
+  padding:16px;background:linear-gradient(160deg,var(--panel-hi),rgba(255,255,255,.01));
+  border:1px solid var(--line);border-radius:18px;
+}
+@media(max-width:760px){.ybars{grid-template-columns:repeat(6,1fr);gap:5px;padding:12px}}
+.ybar{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  cursor:pointer;padding:6px 2px;border-radius:10px;transition:.2s;
+}
+.ybar:hover{background:rgba(255,255,255,.04)}
+.ybar .yb-lbl{font-size:9.5px;font-weight:700;color:var(--muted);order:3}
+.ybar .yb-track{
+  width:100%;height:80px;border-radius:8px;
+  background:rgba(255,255,255,.05);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  overflow:hidden;position:relative;
+}
+.ybar .yb-fill{
+  width:100%;border-radius:6px;
+  background:linear-gradient(180deg,var(--c),color-mix(in srgb,var(--c) 55%,transparent));
+  box-shadow:0 0 12px color-mix(in srgb,var(--c) 45%,transparent);
+  transition:height .7s cubic-bezier(.3,.9,.3,1);
+  min-height:2px;
+}
+.ybar .yb-paid{
+  position:absolute;bottom:0;inset-inline:0;height:0;
+  background:rgba(255,255,255,.22);
+  transition:height .7s cubic-bezier(.3,.9,.3,1);
+}
+.ybar.now .yb-lbl{color:var(--c);font-weight:900}
+.ybar.now .yb-track{
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent);
+}
+.ybar .yb-val{
+  font-size:9px;font-weight:800;color:var(--txt);order:2;
+  height:14px;line-height:14px;
+}
+@media(max-width:760px){.ybar .yb-track{height:60px}}
+
+/* ================= TIMELINE ================= */
+.tl{position:relative;padding-inline-start:34px}
+.tl::before{
+  content:'';position:absolute;top:0;bottom:0;inset-inline-start:13px;width:2px;
+  background:linear-gradient(180deg,var(--c,var(--info)),rgba(255,255,255,.05));
+  border-radius:99px;
+}
+.tl-item{position:relative;margin-bottom:14px}
+.tl-item::before{
+  content:'';position:absolute;top:22px;inset-inline-start:-25px;
+  width:12px;height:12px;border-radius:50%;background:var(--c,var(--info));
+  box-shadow:0 0 0 4px rgba(5,7,15,.9),0 0 16px var(--c,var(--info));
+  z-index:1;
+}
+.tl-card{
+  background:linear-gradient(160deg,var(--panel-hi),rgba(255,255,255,.012));
+  border:1px solid var(--line);border-radius:16px;padding:15px;transition:.25s;
+}
+.tl-card:hover{transform:translateX(-4px);border-color:var(--line-hi);box-shadow:var(--shadow)}
+.tl-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.tl-month{font-size:14.5px;font-weight:800}
+.tl-badge{
+  padding:4px 10px;border-radius:999px;font-size:10.5px;font-weight:800;
+  border:1px solid transparent;
+}
+.tl-badge.ok{background:rgba(34,197,94,.15);color:#4ade80;border-color:rgba(34,197,94,.35)}
+.tl-badge.warn{background:rgba(245,158,11,.15);color:#fbbf24;border-color:rgba(245,158,11,.35)}
+.tl-badge.bad{background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.35)}
+.tl-badge.none{background:rgba(255,255,255,.06);color:var(--muted);border-color:var(--line)}
+.tl-trend{
+  display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:8px;
+  font-size:10.5px;font-weight:800;
+}
+.tl-trend.up{background:rgba(239,68,68,.13);color:#f87171}
+.tl-trend.down{background:rgba(34,197,94,.13);color:#4ade80}
+.tl-trend.stable{background:rgba(245,158,11,.13);color:#fbbf24}
+.tl-trend.none{background:rgba(255,255,255,.06);color:var(--muted)}
+.tl-actions{margin-inline-start:auto;display:flex;gap:6px}
+.tl-actions button{
+  width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.05);
+  border:1px solid var(--line);display:grid;place-items:center;font-size:12px;transition:.2s;
+}
+.tl-actions button:hover{background:var(--panel-hi);transform:scale(1.08)}
+.tl-body{display:grid;grid-template-columns:repeat(auto-fit,minmax(95px,1fr));gap:9px}
+.tl-cell{background:rgba(0,0,0,.22);border:1px solid var(--line);border-radius:11px;padding:10px}
+.tl-cell span{font-size:10px;color:var(--muted);font-weight:600;display:block;margin-bottom:4px}
+.tl-cell b{font-size:13.5px;font-weight:800}
+.tl-cell.reading b{font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+
+/* ================= CALENDAR ================= */
+.cal-top{display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.year-nav{
+  display:flex;align-items:center;gap:6px;background:var(--panel);
+  border:1px solid var(--line);border-radius:14px;padding:5px;
+}
+.year-nav button{
+  width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.04);
+  border:1px solid var(--line);font-size:16px;transition:.2s;display:grid;place-items:center;
+  padding:0 10px;
+}
+.year-nav button:hover{background:var(--panel-hi);transform:scale(1.05)}
+.year-nav button.wide{width:auto;font-size:11.5px;font-weight:800}
+.year-disp{
+  min-width:88px;text-align:center;font-size:18px;font-weight:900;letter-spacing:-.5px;
+  padding:0 8px;color:#fff;
+}
+.year-disp small{display:block;font-size:9.5px;color:var(--muted);font-weight:600;letter-spacing:1px}
+
+.cal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+@media(max-width:760px){.cal-grid{grid-template-columns:repeat(3,1fr);gap:8px}}
+@media(max-width:480px){.cal-grid{grid-template-columns:repeat(2,1fr)}}
+.mcell{
+  position:relative;overflow:hidden;cursor:pointer;
+  background:linear-gradient(160deg,var(--panel-hi),rgba(255,255,255,.012));
+  border:1px solid var(--line);border-radius:16px;padding:15px;transition:.25s;
+}
+.mcell:hover{transform:translateY(-4px);border-color:var(--line-hi);box-shadow:var(--shadow)}
+.mcell.now{border-color:rgba(80,140,255,.55);box-shadow:0 0 30px rgba(80,140,255,.22)}
+.mcell.now::before{
+  content:'الحالي';position:absolute;top:9px;inset-inline-end:9px;
+  font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:99px;
+  background:rgba(80,140,255,.25);color:#8db4ff;border:1px solid rgba(80,140,255,.4);
+}
+.mcell .mo{font-size:14.5px;font-weight:800;margin-bottom:8px}
+.mcell .mtot{font-size:19px;font-weight:900;letter-spacing:-.5px;margin-bottom:9px}
+.mcell .mtot small{font-size:10px;color:var(--muted);font-weight:600;margin-inline-start:3px}
+.mcell .mbar{height:5px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:7px}
+.mcell .mbar i{display:block;height:100%;border-radius:99px;transition:.5s}
+.mcell .msub{font-size:10.5px;color:var(--muted);font-weight:600}
+.mcell.empty{opacity:.5}
+@media(max-width:760px){.mcell{padding:11px}.mcell .mtot{font-size:15px}}
+
+/* ================= MODAL ================= */
+.modal{
+  position:fixed;inset:0;z-index:200;display:none;
+  align-items:center;justify-content:center;padding:18px;
+  background:rgba(2,4,10,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.modal.on{display:flex;animation:fade .3s}
+.modal-box{
+  width:100%;max-width:660px;max-height:90vh;overflow-y:auto;
+  background:linear-gradient(180deg,#0c1328,#070b18);
+  border:1px solid var(--line-hi);border-radius:22px;padding:22px;
+  box-shadow:0 40px 100px rgba(0,0,0,.8);
+  animation:pop .35s cubic-bezier(.3,.9,.3,1);
+}
+.modal-box.wide{max-width:900px}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(10px)}to{opacity:1;transform:none}}
+.modal-box::-webkit-scrollbar{width:6px}
+.modal-box::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:99px}
+.mbox-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.mbox-head h3{font-size:18px;font-weight:900;flex:1}
+.mbox-head button{width:36px;height:36px;border-radius:11px;background:var(--panel);
+  border:1px solid var(--line);font-size:16px;transition:.2s}
+.mbox-head button:hover{background:var(--panel-hi);transform:rotate(90deg)}
+
+/* ================= FORM ================= */
+.form-grid{display:grid;gap:12px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.form-row{grid-template-columns:1fr}}
+.fg{display:flex;flex-direction:column;gap:6px}
+.fg label{font-size:11.5px;color:var(--muted);font-weight:700}
+.fg input,.fg select{
+  background:#0a1024;border:1px solid var(--line);border-radius:12px;
+  padding:11px 12px;font-size:14px;font-weight:600;outline:none;transition:.2s;width:100%;
+}
+.fg input:focus,.fg select:focus{border-color:#4f7cff;
+  box-shadow:0 0 0 3px rgba(79,124,255,.2);background:#0d142c}
+.fg input[type=number]::-webkit-outer-spin-button,
+.fg input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.fg input[type=number]{-moz-appearance:textfield;appearance:textfield}
+
+/* ================= SETTINGS CARD (from design 1) ================= */
+.set-cards{display:grid;gap:14px}
+.set-card{
+  background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.012));
+  border:1px solid var(--line);border-radius:18px;padding:16px;position:relative;overflow:hidden;
+}
+.set-card::before{
+  content:'';position:absolute;top:0;inset-inline:0;height:3px;background:var(--c);
+  box-shadow:0 0 20px var(--c);
+}
+.set-head{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.set-ico{
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:19px;
+  background:color-mix(in srgb,var(--c) 18%,transparent);
+  border:1px solid color-mix(in srgb,var(--c) 35%,transparent);
+}
+.set-name{flex:1;min-width:0}
+.set-name h4{font-size:14px;font-weight:800}
+.set-name small{font-size:10.5px;color:var(--muted)}
+.set-del{
+  width:34px;height:34px;border-radius:10px;background:rgba(239,68,68,.13);
+  border:1px solid rgba(239,68,68,.32);color:#f87171;font-size:14px;transition:.2s;
+  display:grid;place-items:center;
+}
+.set-del:hover{background:rgba(239,68,68,.25);transform:scale(1.05)}
+.set-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.set-fields{grid-template-columns:1fr 1fr;gap:8px}}
+.set-field label{font-size:10.5px;color:var(--muted);margin-bottom:4px;display:block;font-weight:700}
+.set-field input{
+  width:100%;background:#0a1024;border:1px solid var(--line);border-radius:10px;
+  padding:9px 10px;font-size:13.5px;font-weight:700;outline:none;transition:.18s;
+}
+.set-field input:focus{border-color:var(--c);box-shadow:0 0 0 3px rgba(255,255,255,.06)}
+.set-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 10px;
+  padding:11px;border-radius:13px;background:rgba(0,0,0,.26);border:1px solid var(--line);
+}
+.set-stats .stat span{display:block;font-size:10px;color:var(--muted);margin-bottom:3px;font-weight:600}
+.set-stats .stat b{font-size:13.5px;font-weight:800}
+
+/* ================= MActions ================= */
+.mactions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.mactions button{
+  padding:13px;border-radius:13px;font-weight:800;font-size:13.5px;
+  transition:.22s;display:flex;align-items:center;justify-content:center;gap:7px;
+  border:1px solid transparent;
+}
+.mactions .primary{background:linear-gradient(140deg,#2b49a8,#1a2c68);color:#fff;
+  box-shadow:0 10px 25px rgba(43,73,168,.4)}
+.mactions .primary:hover{transform:translateY(-2px);box-shadow:0 15px 35px rgba(43,73,168,.55)}
+.mactions .success{background:linear-gradient(140deg,#15803d,#14532d);color:#dcfce7;
+  box-shadow:0 10px 25px rgba(21,128,61,.4)}
+.mactions .success:hover{transform:translateY(-2px);box-shadow:0 15px 35px rgba(21,128,61,.55)}
+.mactions .ghost{background:rgba(255,255,255,.06);color:var(--txt);border:1px solid var(--line)}
+.mactions .ghost:hover{background:var(--panel-hi)}
+
+/* ================= LOGIN ================= */
+.login-box{
+  background:linear-gradient(160deg,#0c1328,#070b18);
+  border:1px solid var(--line-hi);border-radius:22px;padding:28px;
+  max-width:420px;margin:auto;text-align:center;
+  box-shadow:0 40px 100px rgba(0,0,0,.8);position:relative;overflow:hidden;
+}
+.login-box::before{
+  content:'';position:absolute;top:-80px;inset-inline-end:-80px;width:220px;height:220px;
+  border-radius:50%;background:radial-gradient(circle,rgba(80,140,255,.4),transparent 70%);
+  filter:blur(30px);pointer-events:none;
+}
+.login-box .lb-ico{
+  width:64px;height:64px;border-radius:18px;display:grid;place-items:center;font-size:28px;
+  margin:0 auto 14px;background:linear-gradient(140deg,#1e2b5e,#0b1228);
+  border:1px solid var(--line-hi);box-shadow:var(--glow);position:relative;z-index:1;
+}
+.login-box h3{font-size:19px;font-weight:900;margin-bottom:6px;position:relative;z-index:1}
+.login-box p{font-size:12px;color:var(--muted);margin-bottom:20px;position:relative;z-index:1}
+.login-box .fg{position:relative;z-index:1;text-align:start;margin-bottom:12px}
+.login-hint{
+  font-size:11px;color:var(--muted2);margin-top:14px;position:relative;z-index:1;
+  padding:9px;border-radius:10px;background:rgba(255,255,255,.03);border:1px dashed var(--line);
+}
+
+/* ================= MONTH REPORT ================= */
+.mreport{border-radius:18px;overflow:hidden;border:1px solid var(--line);margin-bottom:14px}
+.mreport-hd{
+  padding:18px;background:linear-gradient(140deg,#1a2b6b,#0d1533);
+  border-bottom:1px solid var(--line);position:relative;overflow:hidden;
+}
+.mreport-hd::after{
+  content:'';position:absolute;top:-40px;inset-inline-end:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,rgba(80,140,255,.5),transparent 70%);
+  filter:blur(30px);
+}
+.mreport-hd h4{font-size:14.5px;font-weight:800;position:relative;z-index:1}
+.mreport-hd .big{font-size:32px;font-weight:900;margin-top:8px;position:relative;z-index:1;
+  letter-spacing:-1.2px}
+.mreport-hd .big small{font-size:12px;color:#a8b8e0;-webkit-text-fill-color:#a8b8e0;
+  font-weight:700;margin-inline-start:5px}
+.mreport-hd .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;
+  position:relative;z-index:1}
+.mreport-hd .grid2 div{background:rgba(0,0,0,.28);border:1px solid var(--line);
+  border-radius:11px;padding:9px}
+.mreport-hd .grid2 span{font-size:10px;color:#a8b8e0;font-weight:600;display:block;margin-bottom:3px}
+.mreport-hd .grid2 b{font-size:13.5px;font-weight:800}
+.mreport-body{padding:6px}
+.mrow{display:flex;align-items:center;gap:11px;padding:11px;border-radius:12px;transition:.2s}
+.mrow:hover{background:rgba(255,255,255,.03)}
+.mrow + .mrow{border-top:1px solid rgba(255,255,255,.04)}
+.mrow .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+  font-size:15px;background:color-mix(in srgb,var(--c) 18%,transparent);
+  border:1px solid color-mix(in srgb,var(--c) 35%,transparent);flex-shrink:0}
+.mrow .nm{flex:1;min-width:0}
+.mrow .nm b{display:block;font-size:13px;font-weight:800}
+.mrow .nm small{font-size:10.5px;color:var(--muted);font-weight:600}
+.mrow .val{text-align:left;font-weight:900;font-size:13.5px;letter-spacing:-.3px}
+.mrow .val small{display:block;font-size:9.5px;color:var(--muted);font-weight:600;margin-top:2px}
+
+/* ================= COLOR/ICON PICK ================= */
+.color-pick{display:flex;gap:6px;flex-wrap:wrap}
+.color-pick button{
+  width:32px;height:32px;border-radius:50%;border:2px solid transparent;transition:.2s;
+}
+.color-pick button.on{border-color:#fff;transform:scale(1.15);box-shadow:0 0 16px currentColor}
+.icon-pick{display:flex;gap:6px;flex-wrap:wrap}
+.icon-pick button{
+  width:38px;height:38px;border-radius:11px;font-size:18px;background:rgba(255,255,255,.05);
+  border:1px solid var(--line);transition:.2s;
+}
+.icon-pick button.on{background:rgba(79,124,255,.2);border-color:#4f7cff;transform:scale(1.08)}
+
+/* ================= TOAST ================= */
+.toast{
+  position:fixed;bottom:26px;inset-inline-start:50%;transform:translateX(50%) translateY(80px);
+  background:linear-gradient(140deg,#1a2b6b,#0d1533);color:#fff;
+  padding:12px 20px;border-radius:14px;border:1px solid var(--line-hi);
+  font-weight:700;font-size:13px;z-index:600;opacity:0;
+  transition:.35s cubic-bezier(.3,.9,.3,1);box-shadow:0 20px 50px rgba(0,0,0,.7);
+  display:flex;align-items:center;gap:9px;pointer-events:none;
+}
+.toast.on{opacity:1;transform:translateX(50%) translateY(0)}
+
+/* ================= EMPTY ================= */
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted)}
+.empty-state .em{font-size:52px;margin-bottom:14px;opacity:.4}
+.empty-state h4{font-size:15px;font-weight:800;color:var(--txt);margin-bottom:6px}
+.empty-state p{font-size:12.5px;line-height:1.9}
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="brand">
+      <div class="logo">🏠</div>
+      <div>
+        <h1>المرافق الذكية</h1>
+        <p>إدارة احترافية شاملة</p>
+      </div>
+    </div>
+
+    <div class="dtwidget" id="dtwidget">
+      <div class="dt-cell">
+        <span class="dt-ic">📅</span>
+        <div class="dt-txt">
+          <span id="dtGreg">—</span>
+          <small>ميلادي</small>
+        </div>
+      </div>
+      <div class="dt-cell">
+        <span class="dt-ic">🌙</span>
+        <div class="dt-txt">
+          <span id="dtHijri">—</span>
+          <small>هجري</small>
+        </div>
+      </div>
+      <div class="dt-cell">
+        <span class="dt-ic">⏰</span>
+        <div class="time" id="dtTime">--:--:--</div>
+      </div>
+    </div>
+
+    <div class="hdr-actions">
+      <button class="icobtn" id="calBtn" title="التقويم">📅</button>
+      <button class="icobtn locked" id="settingsBtn" title="الإعدادات">⚙️</button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= DOCK ================= -->
+<div class="dock-wrap">
+  <nav class="dock" id="dock"></nav>
+</div>
+
+<main>
+
+  <!-- ===== DASHBOARD ===== -->
+  <section class="page on" id="page-dash">
+    <div class="summary">
+      <div class="scard" style="--c:#4f7cff">
+        <span>إجمالي الفواتير هذا الشهر</span>
+        <b id="sumTotal">0 <small>ج.م</small></b>
+      </div>
+      <div class="scard" style="--c:#22c55e">
+        <span>إجمالي المدفوع</span>
+        <b id="sumPaid">0 <small>ج.م</small></b>
+      </div>
+      <div class="scard" style="--c:#ef4444">
+        <span>المتبقي عليك</span>
+        <b id="sumRemain">0 <small>ج.م</small></b>
+      </div>
+      <div class="scard" style="--c:#f59e0b">
+        <span>نسبة السداد</span>
+        <b id="sumPct">0%</b>
+        <div class="mini"><i id="sumBar"></i></div>
+      </div>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <!-- ===== UTILITY PAGE ===== -->
+  <section class="page" id="page-util"></section>
+
+  <!-- ===== CALENDAR ===== -->
+  <section class="page" id="page-cal">
+    <div class="cal-top">
+      <div class="year-nav">
+        <button id="yPrev">‹</button>
+        <div class="year-disp"><span id="yDisp">2026</span><small>السنة</small></div>
+        <button id="yNext">›</button>
+      </div>
+      <div class="year-nav">
+        <button id="yFirst" class="wide">البداية</button>
+        <button id="yToday" class="wide">اليوم</button>
+        <button id="yLast" class="wide">النهاية</button>
+      </div>
+      <div style="margin-inline-start:auto;font-size:12px;color:var(--muted);font-weight:600">
+        اضغط على أي شهر لعرض تقريره الكامل
+      </div>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </section>
+
+</main>
+
+<!-- ================= MONTH MODAL ================= -->
+<div class="modal" id="monthModal">
+  <div class="modal-box">
+    <div class="mbox-head">
+      <h3 id="mmTitle">التقرير الشهري</h3>
+      <button data-close="monthModal">✕</button>
+    </div>
+    <div id="mmContent"></div>
+    <div class="mactions">
+      <button class="primary" id="mmShare">📤 مشاركة</button>
+      <button class="success" id="mmDown">⬇️ تحميل PNG</button>
+    </div>
+    <div class="mactions" style="margin-top:8px">
+      <button class="ghost" id="mmJson">📄 تحميل JSON</button>
+      <button class="ghost" id="mmText">📝 تحميل نص</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= LOGIN MODAL ================= -->
+<div class="modal" id="loginModal">
+  <div class="login-box">
+    <div class="lb-ico">🔒</div>
+    <h3>لوحة الإعدادات</h3>
+    <p>سجّل الدخول للتحكم الكامل بالمرافق والقراءات والمدفوعات</p>
+    <div class="fg">
+      <label>اسم المستخدم</label>
+      <input id="lgUser" autocomplete="username" placeholder="admin">
+    </div>
+    <div class="fg">
+      <label>الرقم السري</label>
+      <input id="lgPass" type="password" autocomplete="current-password" placeholder="••••••">
+    </div>
+    <div class="mactions">
+      <button class="ghost" data-close="loginModal">إلغاء</button>
+      <button class="primary" id="lgSubmit">🔓 دخول</button>
+    </div>
+    <div class="login-hint">
+      💡 الافتراضي: <b>admin</b> / <b>1234</b> — يمكنك تغييرهما من داخل الإعدادات
+    </div>
+  </div>
+</div>
+
+<!-- ================= SETTINGS MODAL ================= -->
+<div class="modal" id="settingsModal">
+  <div class="modal-box wide">
+    <div class="mbox-head">
+      <h3>⚙️ الإعدادات الكاملة</h3>
+      <button data-close="settingsModal">✕</button>
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      <button class="icobtn" style="width:auto;padding:0 14px;height:38px;font-size:12px;font-weight:800" id="stAddUtil">➕ مرفق جديد</button>
+      <button class="icobtn" style="width:auto;padding:0 14px;height:38px;font-size:12px;font-weight:800" id="stAcc">👤 تغيير الحساب</button>
+      <button class="icobtn" style="width:auto;padding:0 14px;height:38px;font-size:12px;font-weight:800" id="stReset" >🗑️ تصفير الكل</button>
+      <button class="icobtn" style="width:auto;padding:0 14px;height:38px;font-size:12px;font-weight:800;margin-inline-start:auto" id="stLogout">🚪 خروج</button>
+    </div>
+
+    <div style="font-size:12px;color:var(--muted);font-weight:700;margin-bottom:10px">
+      📌 إدخال القراءات والمدفوعات — شهر <span id="stMonthLbl" style="color:var(--txt)"></span>
+    </div>
+
+    <div class="set-cards" id="setCards"></div>
+  </div>
+</div>
+
+<!-- ================= ADD UTILITY MODAL ================= -->
+<div class="modal" id="addModal">
+  <div class="modal-box">
+    <div class="mbox-head">
+      <h3>➕ إضافة مرفق جديد</h3>
+      <button data-close="addModal">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-row">
+        <div class="fg">
+          <label>اسم المرفق</label>
+          <input id="amName" placeholder="مثال: صيانة، تأمين، تبرعات...">
+        </div>
+        <div class="fg">
+          <label>الوحدة</label>
+          <input id="amUnit" value="وحدة">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="fg">
+          <label>نوع الحساب</label>
+          <select id="amType">
+            <option value="reading">قراءة عدّاد (سابقة/حالية)</option>
+            <option value="quantity">كمية × سعر</option>
+            <option value="fixed" selected>مبلغ ثابت</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>السعر الافتراضي</label>
+          <input type="number" id="amPrice" step="any" value="0">
+        </div>
+      </div>
+      <div class="fg">
+        <label>الأيقونة</label>
+        <div class="icon-pick" id="amIcon">
+          <button data-i="🔧" class="on">🔧</button>
+          <button data-i="📱">📱</button>
+          <button data-i="🏥">🏥</button>
+          <button data-i="🛒">🛒</button>
+          <button data-i="🎁">🎁</button>
+          <button data-i="💼">💼</button>
+          <button data-i="🚗">🚗</button>
+          <button data-i="🏫">🏫</button>
+          <button data-i="🛡️">🛡️</button>
+          <button data-i="💰">💰</button>
+          <button data-i="📺">📺</button>
+          <button data-i="🏋️">🏋️</button>
+        </div>
+      </div>
+      <div class="fg">
+        <label>اللون المميز</label>
+        <div class="color-pick" id="amColor">
+          <button data-c="#4f7cff" class="on" style="background:#4f7cff;color:#4f7cff"></button>
+          <button data-c="#22c55e" style="background:#22c55e;color:#22c55e"></button>
+          <button data-c="#f59e0b" style="background:#f59e0b;color:#f59e0b"></button>
+          <button data-c="#ef4444" style="background:#ef4444;color:#ef4444"></button>
+          <button data-c="#a78bfa" style="background:#a78bfa;color:#a78bfa"></button>
+          <button data-c="#38bdf8" style="background:#38bdf8;color:#38bdf8"></button>
+          <button data-c="#ec4899" style="background:#ec4899;color:#ec4899"></button>
+          <button data-c="#14b8a6" style="background:#14b8a6;color:#14b8a6"></button>
+        </div>
+      </div>
+    </div>
+    <div class="mactions">
+      <button class="ghost" data-close="addModal">إلغاء</button>
+      <button class="success" id="amSave">✅ حفظ المرفق</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= TOAST ================= -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   0) ثوابت
+   ========================================================= */
+const STORE_KEY = 'marafeq.legend.v1';
+const AUTH_KEY  = 'marafeq.auth';
+const SESSION_KEY = 'marafeq.session';
+const AR_MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو',
+                   'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+const AR_MONTHS_SHORT = ['ينا','فبر','مار','أبر','ماي','يون','يول','أغس','سبت','أكت','نوف','ديس'];
+const CUR = 'ج.م';
+const YEAR_MIN = 2000, YEAR_MAX = 2100;
+
+const DEFAULT_UTILS = [
+  { id:'elec',  name:'الكهرباء', icon:'⚡', unit:'كيلووات', type:'reading',  color:'#f7b500', price:1.50, fees:0 },
+  { id:'water', name:'المياه',   icon:'💧', unit:'م³',      type:'reading',  color:'#2ea8ff', price:5.00, fees:0 },
+  { id:'gas',   name:'الغاز',    icon:'🔥', unit:'م³',      type:'reading',  color:'#ff7043', price:3.00, fees:0 },
+  { id:'net',   name:'الإنترنت', icon:'🌐', unit:'باقة',    type:'fixed',    color:'#a78bfa', price:0,    fees:0 },
+  { id:'edu',   name:'التعليم',  icon:'🎓', unit:'مصروفات', type:'fixed',    color:'#34d399', price:0,    fees:0 },
+  { id:'fuel',  name:'البنزين',  icon:'⛽', unit:'لتر',     type:'quantity', color:'#ef4444', price:15.00,fees:0 }
+];
+
+/* =========================================================
+   1) الحالة
+   ========================================================= */
+let DB = loadDB();
+let AUTH = loadAuth();
+let ui = {
+  view: 'dash',
+  currentMonth: keyOf(new Date()),
+  activeUtil: null,
+  calYear: new Date().getFullYear()
+};
+let saveTimer = null;
+
+function loadDB(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw){
+      const o = JSON.parse(raw);
+      if(o && o.months){
+        if(!Array.isArray(o.utilities) || !o.utilities.length) o.utilities = [...DEFAULT_UTILS];
+        return o;
+      }
+    }
+  }catch(e){}
+  return { utilities: JSON.parse(JSON.stringify(DEFAULT_UTILS)), months:{}, settings:{} };
+}
+function loadAuth(){
+  try{
+    const raw = localStorage.getItem(AUTH_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return { user:'admin', pass:'1234' };
+}
+function persist(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(DB)); }catch(e){} }
+function saveAuth(){ try{ localStorage.setItem(AUTH_KEY, JSON.stringify(AUTH)); }catch(e){} }
+function save(){ clearTimeout(saveTimer); saveTimer = setTimeout(persist, 220); }
+
+/* =========================================================
+   2) أدوات التواريخ والأرقام
+   ========================================================= */
+function keyOf(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0'); }
+function partsOf(key){ const [y,m] = key.split('-').map(Number); return { y, m }; }
+function shiftMonth(key, delta){
+  const { y, m } = partsOf(key);
+  return keyOf(new Date(y, m - 1 + delta, 1));
+}
+function monthLabel(key, short){
+  const { y, m } = partsOf(key);
+  const names = short ? AR_MONTHS_SHORT : AR_MONTHS;
+  return names[m-1] + ' ' + (short ? String(y).slice(2) : y);
+}
+function round(n){ return Math.round(((+n)||0) * 100) / 100; }
+const nfFmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+function fmt(n){ return nfFmt.format(round(n)); }
+function uid(){ return 'u_' + Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4); }
+
+/* =========================================================
+   3) ضمان بيانات الشهر
+   ========================================================= */
+function ensureMonth(key){
+  if(!DB.months[key]){
+    const prev = DB.months[shiftMonth(key, -1)];
+    const m = {};
+    DB.utilities.forEach(u => {
+      const s = DB.settings[u.id] || {};
+      const prevCurr = prev?.[u.id]?.curr ?? 0;
+      m[u.id] = {
+        prev:   u.type === 'reading' ? prevCurr : 0,
+        curr: 0, qty: 0, amount: 0,
+        price: s.price ?? u.price ?? 0,
+        fees:  s.fees  ?? u.fees  ?? 0,
+        paid: 0
+      };
+    });
+    DB.months[key] = m;
+    save();
+  }
+  let dirty = false;
+  DB.utilities.forEach(u => {
+    if(!DB.months[key][u.id]){
+      DB.months[key][u.id] = {
+        prev:0, curr:0, qty:0, amount:0,
+        price: DB.settings[u.id]?.price ?? u.price ?? 0,
+        fees:  DB.settings[u.id]?.fees  ?? u.fees  ?? 0,
+        paid: 0
+      };
+      dirty = true;
+    }
+  });
+  if(dirty) save();
+  return DB.months[key];
+}
+
+/* =========================================================
+   4) الحسابات
+   ========================================================= */
+function compute(u, d){
+  let cons = 0, base = 0;
+  if(u.type === 'reading'){
+    cons = Math.max(0, (+d.curr||0) - (+d.prev||0));
+    base = cons * (+d.price||0);
+  } else if(u.type === 'quantity'){
+    cons = +d.qty || 0;
+    base = cons * (+d.price||0);
+  } else {
+    base = +d.amount || 0;
+  }
+  const total  = round(base + (+d.fees||0));
+  const paid   = round(d.paid);
+  const remain = round(Math.max(0, total - paid));
+  const status = total <= 0 ? 'none'
+               : paid <= 0 ? 'unpaid'
+               : (paid + 0.01 >= total ? 'paid' : 'partial');
+  return { cons: round(cons), total, paid, remain, status };
+}
+const STATUS_TXT = { paid:'مدفوع', partial:'جزئي', unpaid:'غير مدفوع', none:'—' };
+
+function totalMonth(key){
+  const m = DB.months[key] || {};
+  let total=0, paid=0;
+  DB.utilities.forEach(u => {
+    const d = m[u.id]; if(!d) return;
+    const c = compute(u, d);
+    total += c.total; paid += c.paid;
+  });
+  return { total: round(total), paid: round(paid), remain: round(Math.max(0, total-paid)) };
+}
+
+function trendOf(curr, prev){
+  if(prev == null || prev === 0) return { dir:'none', pct:0 };
+  const diff = (curr - prev) / prev * 100;
+  if(Math.abs(diff) < 5) return { dir:'stable', pct: Math.round(Math.abs(diff)) };
+  return { dir: diff > 0 ? 'up' : 'down', pct: Math.round(Math.abs(diff)) };
+}
+
+/* =========================================================
+   5) الساعة والتاريخ
+   ========================================================= */
+function tick(){
+  const now = new Date();
+  // ميلادي
+  try{
+    document.getElementById('dtGreg').textContent = new Intl.DateTimeFormat('ar-EG', {
+      day:'numeric', month:'short', year:'numeric', weekday:'short'
+    }).format(now);
+  }catch(e){ document.getElementById('dtGreg').textContent = now.toLocaleDateString('ar-EG'); }
+
+  // هجري
+  try{
+    document.getElementById('dtHijri').textContent = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', {
+      day:'numeric', month:'long', year:'numeric'
+    }).format(now);
+  }catch(e){ document.getElementById('dtHijri').textContent = '—'; }
+
+  // توقيت
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('dtTime').textContent = `${hh}:${mm}:${ss}`;
+}
+tick(); setInterval(tick, 1000);
+
+/* =========================================================
+   6) Dock (التبويبات)
+   ========================================================= */
+function renderDock(){
+  const dockEl = document.getElementById('dock');
+  const items = [
+    { view:'dash', icon:'🏠', label:'الرئيسية', color:'#4f7cff' },
+    { view:'cal',  icon:'📅', label:'التقويم',  color:'#38bdf8' },
+    ...DB.utilities.map(u => ({
+      view:'util:' + u.id, icon:u.icon, label:u.name, color:u.color
+    }))
+  ];
+  dockEl.innerHTML = items.map(it => `
+    <button class="dock-item" data-view="${it.view}" style="--c:${it.color}">
+      <span class="di-icon">${it.icon}</span>
+      <span class="di-label">${it.label}</span>
+    </button>
+  `).join('');
+  updateDockActive();
+}
+function updateDockActive(){
+  document.querySelectorAll('.dock-item').forEach(b => b.classList.remove('on'));
+  const sel = ui.view === 'dash' ? 'dash'
+            : ui.view === 'cal'  ? 'cal'
+            : ui.view === 'util' ? 'util:' + ui.activeUtil : '';
+  const el = document.querySelector(`.dock-item[data-view="${sel}"]`);
+  if(el) el.classList.add('on');
+}
+document.getElementById('dock').addEventListener('click', e => {
+  const t = e.target.closest('.dock-item');
+  if(!t) return;
+  const v = t.dataset.view;
+  if(v === 'dash') showView('dash');
+  else if(v === 'cal') showView('cal');
+  else if(v.startsWith('util:')) showView('util', v.slice(5));
+});
+
+/* =========================================================
+   7) التنقل
+   ========================================================= */
+function showView(name, utilId){
+  ui.view = name;
+  if(name === 'util') ui.activeUtil = utilId;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  if(name === 'dash'){
+    document.getElementById('page-dash').classList.add('on');
+    renderDashboard();
+  } else if(name === 'util'){
+    document.getElementById('page-util').classList.add('on');
+    renderUtilityPage(utilId);
+  } else if(name === 'cal'){
+    document.getElementById('page-cal').classList.add('on');
+    renderCalendar();
+  }
+  updateDockActive();
+  window.scrollTo({ top: 0, behavior:'smooth' });
+}
+
+/* =========================================================
+   8) لوحة التحكم
+   ========================================================= */
+function renderDashboard(){
+  ensureMonth(ui.currentMonth);
+  const m = DB.months[ui.currentMonth];
+  let gTotal=0, gPaid=0;
+
+  const tiles = DB.utilities.map(u => {
+    const c = compute(u, m[u.id]);
+    gTotal += c.total; gPaid += c.paid;
+    const pct = c.total > 0 ? Math.min(100, (c.paid/c.total)*100) : 0;
+    const barColor = c.status === 'paid' ? 'linear-gradient(90deg,#16a34a,#4ade80)'
+                    : c.status === 'partial' ? 'linear-gradient(90deg,#d97706,#fbbf24)'
+                    : 'linear-gradient(90deg,#b91c1c,#f87171)';
+    const sub = u.type === 'fixed' ? 'مبلغ ثابت'
+              : u.type === 'reading' ? `استهلاك: ${fmt(c.cons)} ${u.unit}`
+              : `الكمية: ${fmt(c.cons)} ${u.unit}`;
+    return `
+      <article class="tile" data-util="${u.id}" style="--c:${u.color}">
+        <div class="tile-top">
+          <div class="tile-ico">${u.icon}</div>
+          <div class="tile-name"><h3>${u.name}</h3><small>${u.unit}</small></div>
+        </div>
+        <div class="tile-amount">${fmt(c.total)} <small>${CUR}</small></div>
+        <div class="tile-sub">${sub} · <span style="color:${c.remain>0?'#f87171':'#4ade80'}">${c.remain>0?'متبقي '+fmt(c.remain):'مسدد'}</span></div>
+        <div class="tile-bar"><i style="width:${pct}%;background:${barColor}"></i></div>
+      </article>
+    `;
+  }).join('');
+
+  document.getElementById('tiles').innerHTML = tiles;
+
+  const remain = Math.max(0, gTotal-gPaid);
+  const pct = gTotal > 0 ? Math.round((gPaid/gTotal)*100) : 0;
+  document.getElementById('sumTotal').innerHTML  = fmt(gTotal) + ` <small>${CUR}</small>`;
+  document.getElementById('sumPaid').innerHTML   = fmt(gPaid)  + ` <small>${CUR}</small>`;
+  document.getElementById('sumRemain').innerHTML = fmt(remain) + ` <small>${CUR}</small>`;
+  document.getElementById('sumPct').textContent  = pct + '%';
+  document.getElementById('sumBar').style.width  = pct + '%';
+}
+document.getElementById('tiles').addEventListener('click', e => {
+  const tile = e.target.closest('[data-util]');
+  if(!tile) return;
+  showView('util', tile.dataset.util);
+});
+
+/* =========================================================
+   9) صفحة المرفق (Disk + Trend + Timeline)
+   ========================================================= */
+function renderUtilityPage(utilId){
+  const u = DB.utilities.find(x => x.id === utilId);
+  if(!u){ showView('dash'); return; }
+
+  const pageEl = document.getElementById('page-util');
+  const { y, m } = partsOf(ui.currentMonth);
+
+  // بيانات الشهر الحالي والسابق
+  const dm = DB.months[ui.currentMonth]?.[u.id] || {};
+  const prevKey = shiftMonth(ui.currentMonth, -1);
+  const dp = DB.months[prevKey]?.[u.id] || {};
+  const c  = compute(u, dm);
+  const cP = compute(u, dp);
+
+  // اتجاه الاستهلاك
+  const tr = trendOf(c.cons, cP.cons);
+  const trClass = tr.dir === 'none' ? 'none' : tr.dir;
+  const trArrow = tr.dir === 'up' ? '▲' : tr.dir === 'down' ? '▼' : tr.dir === 'stable' ? '▬' : '—';
+  const trText  = tr.dir === 'up' ? 'ارتفاع'
+                : tr.dir === 'down' ? 'انخفاض'
+                : tr.dir === 'stable' ? 'مستقر' : 'لا مقارنة';
+  const trPct   = tr.dir === 'none' ? '' : ` · ${tr.pct}%`;
+
+  // الديسك: نسبة السداد
+  const diskPct = c.total > 0 ? Math.min(100, (c.paid/c.total)*100) : 0;
+
+  // متوسط سنوي وحسابات
+  const yearKeys = [];
+  for(let i = 0; i < 12; i++) yearKeys.push(`${y}-${String(i+1).padStart(2,'0')}`);
+  const yearData = yearKeys.map(k => {
+    const d = DB.months[k]?.[u.id];
+    return d ? compute(u, d) : { total:0, paid:0, cons:0, status:'none' };
+  });
+  const nonZeroT = yearData.filter(v => v.total > 0);
+  const avgT = nonZeroT.length ? nonZeroT.reduce((a,b)=>a+b.total,0)/nonZeroT.length : 0;
+  const maxT = Math.max(...yearData.map(v=>v.total), 0);
+  const yearTotalPaid = yearData.reduce((a,b)=>a+b.paid,0);
+  const yearTotalAll  = yearData.reduce((a,b)=>a+b.total,0);
+  const yearPct = yearTotalAll > 0 ? Math.round((yearTotalPaid/yearTotalAll)*100) : 0;
+
+  // SVG disk
+  const R = 82, SW = 16;
+  const C = 2 * Math.PI * R;
+  const offset = C * (1 - diskPct/100);
+
+  pageEl.innerHTML = `
+    <div class="uhero" style="--c:${u.color}">
+      <div class="uhero-in">
+        <div class="disk-wrap">
+          <svg class="disk-svg" viewBox="0 0 220 220">
+            <defs>
+              <filter id="blur_${u.id}" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="10"/>
+              </filter>
+              <linearGradient id="grad_${u.id}" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="${u.color}"/>
+                <stop offset="100%" stop-color="${u.color}" stop-opacity=".55"/>
+              </linearGradient>
+            </defs>
+            <!-- توهج بلوري خلفي -->
+            <circle cx="110" cy="110" r="${R}" fill="none" stroke="${u.color}"
+              stroke-width="${SW}" opacity=".55" filter="url(#blur_${u.id})"/>
+            <circle cx="110" cy="110" r="${R-22}" fill="${u.color}" opacity=".06"
+              filter="url(#blur_${u.id})"/>
+            <!-- الحلقة الخلفية -->
+            <circle cx="110" cy="110" r="${R}" fill="none" stroke="rgba(255,255,255,.08)"
+              stroke-width="${SW}"/>
+            <!-- التقدم -->
+            <circle cx="110" cy="110" r="${R}" fill="none" stroke="url(#grad_${u.id})"
+              stroke-width="${SW}" stroke-linecap="round"
+              stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${offset.toFixed(2)}"
+              transform="rotate(-90 110 110)"
+              style="transition:stroke-dashoffset .9s cubic-bezier(.3,.9,.3,1)"/>
+            <!-- نقطة نهاية -->
+            <circle cx="110" cy="${110 - R}" r="4" fill="#fff"
+              transform="rotate(${diskPct*3.6} 110 110)" style="filter:drop-shadow(0 0 8px ${u.color})"/>
+          </svg>
+          <div class="disk-center">
+            <div class="dc-month">${AR_MONTHS[m-1]}</div>
+            <div class="dc-year">${y}</div>
+            <div class="dc-pct">${Math.round(diskPct)}<small>%</small></div>
+            <div class="dc-sub">${c.paid>0 ? fmt(c.paid)+' من '+fmt(c.total) : 'لم يُسجَّل بعد'}</div>
+          </div>
+        </div>
+
+        <div class="hero-info">
+          <div class="hero-title">
+            <span class="hi-ic">${u.icon}</span>
+            <span>${u.name}</span>
+          </div>
+          <div class="hero-sub">${u.type === 'fixed' ? 'مبلغ ثابت' : u.type === 'reading' ? 'قراءة عدّاد' : 'كمية × سعر'} · ${u.unit}</div>
+
+          <div class="trend ${trClass}">
+            <span class="tr-arrow">${trArrow}</span>
+            <span>اتجاه الاستهلاك: ${trText}${trPct}</span>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <span>استهلاك الشهر</span>
+              <b>${u.type === 'fixed' ? '—' : fmt(c.cons)}<small>${u.type === 'fixed' ? '' : u.unit}</small></b>
+            </div>
+            <div class="kpi">
+              <span>الإجمالي</span>
+              <b>${fmt(c.total)}<small>${CUR}</small></b>
+            </div>
+            <div class="kpi">
+              <span>المتبقي</span>
+              <b style="color:${c.remain>0?'#f87171':'#4ade80'}">${fmt(c.remain)}<small>${CUR}</small></b>
+            </div>
+            <div class="kpi">
+              <span>متوسط شهري</span>
+              <b>${fmt(avgT)}<small>${CUR}</small></b>
+            </div>
+            <div class="kpi">
+              <span>أعلى شهر</span>
+              <b>${fmt(maxT)}<small>${CUR}</small></b>
+            </div>
+            <div class="kpi">
+              <span>سداد السنة</span>
+              <b>${yearPct}<small>%</small></b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ybars-wrap">
+      <div class="ybars-title">📊 مصروفات وقراءات ${y} <em>(اضغط على أي شهر للتفاصيل)</em></div>
+      <div class="ybars">
+        ${yearData.map((d, i) => {
+          const k = yearKeys[i];
+          const isNow = k === ui.currentMonth;
+          const maxYear = Math.max(...yearData.map(v=>v.total), 1);
+          const h = d.total > 0 ? Math.max(4, (d.total/maxYear) * 100) : 0;
+          const paidH = d.total > 0 ? (d.paid/d.total) * 100 : 0;
+          return `
+            <div class="ybar ${isNow?'now':''}" data-month="${k}" style="--c:${u.color}">
+              <span class="yb-val">${d.total > 0 ? fmt(d.total) : ''}</span>
+              <div class="yb-track">
+                <div class="yb-fill" style="height:${h}%"></div>
+                <div class="yb-paid" style="height:${paidH}%"></div>
+              </div>
+              <span class="yb-lbl">${AR_MONTHS_SHORT[i]}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+
+    <div class="ybars-title" style="margin-top:24px">
+      📆 التايم لاين الكامل <em>(كل القراءات والمدفوعات المسجلة)</em>
+    </div>
+    <div class="tl" id="timeline" style="--c:${u.color}"></div>
+  `;
+
+  renderTimeline(u);
+  // ربط النقر على أشرطة السنة
+  pageEl.querySelectorAll('.ybar').forEach(b => {
+    b.onclick = () => openMonthModal(b.dataset.month, u.id);
+  });
+}
+
+function renderTimeline(u){
+  const tlEl = document.getElementById('timeline');
+  const allMonths = Object.keys(DB.months).sort().reverse()
+    .filter(k => DB.months[k]?.[u.id]);
+
+  if(!allMonths.length){
+    tlEl.innerHTML = `<div class="empty-state">
+      <div class="em">📭</div>
+      <h4>لا توجد بيانات بعد</h4>
+      <p>اذهب إلى الإعدادات ⚙️ وسجّل قراءات ومدفوعات هذا المرفق.</p>
+    </div>`;
+    return;
+  }
+
+  // اتجاه كل شهر مقارنة بالسابق
+  tlEl.innerHTML = allMonths.map((k, idx) => {
+    const d = DB.months[k][u.id];
+    const c = compute(u, d);
+    const prevK = shiftMonth(k, -1);
+    const prevD = DB.months[prevK]?.[u.id];
+    const cP = prevD ? compute(u, prevD) : null;
+    const tr = cP ? trendOf(c.cons, cP.cons) : { dir:'none', pct:0 };
+
+    const badgeCls = c.status === 'paid' ? 'ok'
+                   : c.status === 'partial' ? 'warn'
+                   : c.status === 'none' ? 'none' : 'bad';
+
+    const consCell = u.type === 'fixed'
+      ? `<div class="tl-cell"><span>النوع</span><b>مبلغ ثابت</b></div>`
+      : u.type === 'reading'
+      ? `<div class="tl-cell reading"><span>قراءة سابقة</span><b>${fmt(d.prev)}</b></div>
+         <div class="tl-cell reading"><span>قراءة حالية</span><b>${fmt(d.curr)}</b></div>
+         <div class="tl-cell reading"><span>الاستهلاك</span><b>${fmt(c.cons)} ${u.unit}</b></div>`
+      : `<div class="tl-cell reading"><span>الكمية</span><b>${fmt(c.cons)} ${u.unit}</b></div>`;
+
+    const trendHTML = tr.dir !== 'none'
+      ? `<span class="tl-trend ${tr.dir}">${tr.dir==='up'?'▲':tr.dir==='down'?'▼':'▬'} ${tr.pct}%</span>`
+      : '';
+
+    return `
+      <div class="tl-item" data-month="${k}">
+        <div class="tl-card">
+          <div class="tl-head">
+            <span class="tl-month">${monthLabel(k)}</span>
+            <span class="tl-badge ${badgeCls}">${STATUS_TXT[c.status]}</span>
+            ${trendHTML}
+            <div class="tl-actions">
+              <button data-act="view" title="عرض التقرير">👁</button>
+              <button data-act="export" title="تنزيل صورة">📤</button>
+            </div>
+          </div>
+          <div class="tl-body">
+            ${consCell}
+            <div class="tl-cell"><span>الإجمالي</span><b>${fmt(c.total)}</b></div>
+            <div class="tl-cell"><span>المدفوع</span><b style="color:#4ade80">${fmt(c.paid)}</b></div>
+            <div class="tl-cell"><span>المتبقي</span><b style="color:${c.remain>0?'#f87171':'#4ade80'}">${fmt(c.remain)}</b></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  tlEl.onclick = e => {
+    const btn = e.target.closest('[data-act]');
+    const item = e.target.closest('[data-month]');
+    if(!item) return;
+    const k = item.dataset.month;
+    if(btn){
+      e.stopPropagation();
+      if(btn.dataset.act === 'view') openMonthModal(k, u.id);
+      else if(btn.dataset.act === 'export') exportMonthImage(k, u.id);
+    } else {
+      openMonthModal(k, u.id);
+    }
+  };
+}
+
+/* =========================================================
+   10) التقويم
+   ========================================================= */
+function renderCalendar(){
+  const y = ui.calYear;
+  document.getElementById('yDisp').textContent = y;
+  const grid = document.getElementById('calGrid');
+  const nowKey = keyOf(new Date());
+
+  let html = '';
+  for(let m = 1; m <= 12; m++){
+    const k = `${y}-${String(m).padStart(2,'0')}`;
+    const data = DB.months[k];
+    const has = data && Object.keys(data).length > 0;
+    const isNow = k === nowKey;
+
+    let tot=0, paid=0;
+    if(has){ const t = totalMonth(k); tot=t.total; paid=t.paid; }
+    const remain = Math.max(0, tot-paid);
+    const pct = tot > 0 ? Math.min(100, (paid/tot)*100) : 0;
+    const barColor = pct >= 99.9 ? 'linear-gradient(90deg,#16a34a,#4ade80)'
+                    : pct > 0 ? 'linear-gradient(90deg,#d97706,#fbbf24)'
+                    : 'linear-gradient(90deg,#b91c1c,#f87171)';
+
+    html += `
+      <div class="mcell ${isNow?'now':''} ${!has?'empty':''}" data-month="${k}">
+        <div class="mo">${AR_MONTHS[m-1]}</div>
+        <div class="mtot">${tot>0 ? fmt(tot)+' <small>'+CUR+'</small>' : '—'}</div>
+        <div class="mbar"><i style="width:${pct}%;background:${barColor}"></i></div>
+        <div class="msub">${tot>0 ? (remain>0 ? 'متبقي '+fmt(remain) : '✅ مسدد') : 'لا بيانات'}</div>
+      </div>
+    `;
+  }
+  grid.innerHTML = html;
+}
+document.getElementById('calGrid').onclick = e => {
+  const c = e.target.closest('[data-month]');
+  if(!c) return;
+  openMonthModal(c.dataset.month);
+};
+document.getElementById('yPrev').onclick  = () => { ui.calYear = Math.max(YEAR_MIN, ui.calYear-1); renderCalendar(); };
+document.getElementById('yNext').onclick  = () => { ui.calYear = Math.min(YEAR_MAX, ui.calYear+1); renderCalendar(); };
+document.getElementById('yFirst').onclick = () => { ui.calYear = YEAR_MIN; renderCalendar(); };
+document.getElementById('yLast').onclick  = () => { ui.calYear = YEAR_MAX; renderCalendar(); };
+document.getElementById('yToday').onclick = () => { ui.calYear = new Date().getFullYear(); renderCalendar(); };
+document.getElementById('calBtn').onclick = () => showView('cal');
+
+/* =========================================================
+   11) Modal التقرير الشهري
+   ========================================================= */
+let modalMonthKey = null, modalUtilId = null;
+function openMonthModal(key, utilId){
+  modalMonthKey = key;
+  modalUtilId = utilId || null;
+  const { y, m } = partsOf(key);
+  const title = (utilId ? DB.utilities.find(x=>x.id===utilId).name + ' · ' : '') +
+                AR_MONTHS[m-1] + ' ' + y;
+  document.getElementById('mmTitle').textContent = title;
+
+  const monthData = DB.months[key];
+  const content = document.getElementById('mmContent');
+
+  if(!monthData || Object.keys(monthData).length === 0){
+    content.innerHTML = `<div class="empty-state">
+      <div class="em">📭</div>
+      <h4>لا توجد بيانات لهذا الشهر</h4>
+      <p>اذهب إلى الإعدادات ⚙️ وسجّل بيانات هذا الشهر.</p>
+    </div>`;
+  } else {
+    const list = utilId ? DB.utilities.filter(u=>u.id===utilId) : DB.utilities;
+    let total=0, paid=0;
+    const rows = list.map(u => {
+      const d = monthData[u.id];
+      if(!d) return '';
+      const c = compute(u, d);
+      total += c.total; paid += c.paid;
+      return `
+        <div class="mrow" style="--c:${u.color}">
+          <div class="ic">${u.icon}</div>
+          <div class="nm">
+            <b>${u.name}</b>
+            <small>${c.status==='none' ? 'لم يُستخدم'
+              : u.type === 'fixed' ? 'مبلغ ثابت'
+              : `استهلاك ${fmt(c.cons)} ${u.unit}`}</small>
+          </div>
+          <div class="val">
+            ${fmt(c.total)} ${CUR}
+            <small style="color:${c.remain>0?'#f87171':'#4ade80'}">${c.remain>0?'متبقي '+fmt(c.remain):'مسدد'}</small>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const remain = Math.max(0, total-paid);
+    content.innerHTML = `
+      <div class="mreport">
+        <div class="mreport-hd">
+          <h4>${utilId ? DB.utilities.find(x=>x.id===utilId).name : 'التقرير الكامل'}</h4>
+          <div class="big">${fmt(total)} <small>${CUR}</small></div>
+          <div class="grid2">
+            <div><span>المدفوع</span><b style="color:#6ee7a0">${fmt(paid)}</b></div>
+            <div><span>المتبقي</span><b style="color:#f87171">${fmt(remain)}</b></div>
+          </div>
+        </div>
+        <div class="mreport-body">
+          ${rows || '<div class="empty-state" style="padding:30px"><p>لا توجد بيانات</p></div>'}
+        </div>
+      </div>
+    `;
+  }
+  document.getElementById('monthModal').classList.add('on');
+}
+
+document.getElementById('mmShare').onclick = async () => {
+  try{
+    const canvas = buildMonthCanvas(modalMonthKey, modalUtilId);
+    canvas.toBlob(async blob => {
+      const file = new File([blob], `report-${modalMonthKey}.png`, { type:'image/png' });
+      if(navigator.canShare && navigator.canShare({ files:[file] })){
+        try{
+          await navigator.share({ files:[file], title:'تقرير المرافق', text:`تقرير ${monthLabel(modalMonthKey)}` });
+        }catch(err){ if(err.name!=='AbortError') downloadCanvas(canvas, modalMonthKey); }
+      } else downloadCanvas(canvas, modalMonthKey);
+    }, 'image/png');
+  }catch(e){ toast('⚠️ تعذرت المشاركة'); }
+};
+document.getElementById('mmDown').onclick = () => {
+  try{ downloadCanvas(buildMonthCanvas(modalMonthKey, modalUtilId), modalMonthKey); }
+  catch(e){ toast('⚠️ تعذر التحميل'); }
+};
+document.getElementById('mmJson').onclick = () => {
+  const payload = {
+    month: modalMonthKey,
+    generatedAt: new Date().toISOString(),
+    data: modalUtilId
+      ? { [modalUtilId]: DB.months[modalMonthKey]?.[modalUtilId] }
+      : DB.months[modalMonthKey] || {}
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `report-${modalMonthKey}.json`;
+  a.click();
+  toast('📄 تم تحميل JSON');
+};
+document.getElementById('mmText').onclick = () => {
+  const { y, m } = partsOf(modalMonthKey);
+  const monthData = DB.months[modalMonthKey] || {};
+  const list = modalUtilId ? DB.utilities.filter(u=>u.id===modalUtilId) : DB.utilities;
+  let total=0, paid=0;
+  let txt = `تقرير ${AR_MONTHS[m-1]} ${y}\n`;
+  txt += `بتاريخ: ${new Date().toLocaleString('ar-EG')}\n`;
+  txt += '─'.repeat(30) + '\n';
+  list.forEach(u => {
+    const d = monthData[u.id]; if(!d) return;
+    const c = compute(u, d);
+    total += c.total; paid += c.paid;
+    txt += `• ${u.name}: ${fmt(c.total)} ${CUR} — مدفوع ${fmt(c.paid)} — متبقي ${fmt(c.remain)}\n`;
+  });
+  txt += '─'.repeat(30) + '\n';
+  txt += `الإجمالي: ${fmt(total)} ${CUR}\nالمدفوع: ${fmt(paid)} ${CUR}\nالمتبقي: ${fmt(total-paid)} ${CUR}\n`;
+  const blob = new Blob([txt], { type:'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `report-${modalMonthKey}.txt`;
+  a.click();
+  toast('📝 تم تحميل النص');
+};
+
+function downloadCanvas(canvas, key){
+  const a = document.createElement('a');
+  a.download = `report-${key}.png`;
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+  toast('⬇️ تم تحميل الصورة');
+}
+function exportMonthImage(key, utilId){
+  try{ downloadCanvas(buildMonthCanvas(key, utilId), key); }
+  catch(e){ toast('⚠️ تعذر التصدير'); }
+}
+
+/* =========================================================
+   12) بناء صورة Canvas
+   ========================================================= */
+function buildMonthCanvas(key, utilId){
+  const SCALE = 2;
+  const W = 1000, H = 1000;
+  const canvas = document.createElement('canvas');
+  canvas.width = W*SCALE; canvas.height = H*SCALE;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(SCALE, SCALE);
+
+  const { y, m } = partsOf(key);
+  const monthData = DB.months[key] || {};
+  const list = utilId ? DB.utilities.filter(u=>u.id===utilId) : DB.utilities;
+
+  // خلفية
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0a1124'); bg.addColorStop(1,'#050813');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+
+  // توهج
+  const rg = ctx.createRadialGradient(W-180,80,0,W-180,80,500);
+  rg.addColorStop(0,'rgba(80,140,255,.35)'); rg.addColorStop(1,'rgba(80,140,255,0)');
+  ctx.fillStyle = rg; ctx.fillRect(0,0,W,500);
+
+  const P = 70;
+  ctx.textBaseline = 'top';
+  ctx.textAlign = 'right';
+  ctx.direction = 'rtl';
+
+  // ─── الهيدر: التاريخ الهجري/الميلادي/الوقت ───
+  const now = new Date();
+  const gregStr = new Intl.DateTimeFormat('ar-EG', { day:'numeric', month:'long', year:'numeric', weekday:'long' }).format(now);
+  let hijriStr = '—';
+  try{ hijriStr = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', { day:'numeric', month:'long', year:'numeric' }).format(now); }catch(e){}
+  const timeStr = now.toLocaleTimeString('ar-EG', { hour:'2-digit', minute:'2-digit' });
+
+  ctx.fillStyle = 'rgba(255,255,255,.5)';
+  ctx.font = '700 12px Tajawal, sans-serif';
+  ctx.fillText('📅 ' + gregStr + '  ·  🌙 ' + hijriStr + '  ·  ⏰ ' + timeStr, W-P, 34);
+
+  ctx.fillStyle = '#eef2ff';
+  ctx.font = '900 46px Tajawal, sans-serif';
+  ctx.fillText(`${AR_MONTHS[m-1]} ${y}`, W-P, 62);
+
+  // خط فاصل متدرج
+  const lg = ctx.createLinearGradient(W-P, 0, P, 0);
+  lg.addColorStop(0,'rgba(120,160,255,.7)'); lg.addColorStop(1,'rgba(120,160,255,0)');
+  ctx.fillStyle = lg; ctx.fillRect(P, 132, W-P*2, 1.5);
+
+  // ─── الملخص ───
+  let total=0, paid=0;
+  list.forEach(u => {
+    const d = monthData[u.id]; if(!d) return;
+    const c = compute(u, d);
+    total += c.total; paid += c.paid;
+  });
+  const remain = Math.max(0, total-paid);
+
+  ctx.fillStyle = 'rgba(255,255,255,.05)';
+  roundRect(ctx, P, 160, W-P*2, 140, 22);
+  ctx.fill();
+
+  ctx.fillStyle = '#8b96b4';
+  ctx.font = '700 14px Tajawal, sans-serif';
+  ctx.fillText('الإجمالي المستحق', W-P-28, 182);
+  ctx.fillStyle = '#fff';
+  ctx.font = '900 50px Tajawal, sans-serif';
+  ctx.fillText(fmt(total) + ' ' + CUR, W-P-28, 202);
+
+  // أزرار مدفوع ومتبقي
+  ctx.fillStyle = 'rgba(34,197,94,.16)';
+  roundRect(ctx, W/2+20, 240, 220, 50, 14); ctx.fill();
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#6ee7a0'; ctx.font = '800 12px Tajawal, sans-serif';
+  ctx.fillText('المدفوع', W/2+130, 250);
+  ctx.font = '900 18px Tajawal, sans-serif';
+  ctx.fillText(fmt(paid), W/2+130, 266);
+
+  ctx.fillStyle = 'rgba(239,68,68,.16)';
+  roundRect(ctx, P+28, 240, 220, 50, 14); ctx.fill();
+  ctx.fillStyle = '#f87171'; ctx.font = '800 12px Tajawal, sans-serif';
+  ctx.fillText('المتبقي', P+138, 250);
+  ctx.font = '900 18px Tajawal, sans-serif';
+  ctx.fillText(fmt(remain), P+138, 266);
+  ctx.textAlign = 'right';
+
+  // ─── القائمة ───
+  ctx.fillStyle = '#eef2ff';
+  ctx.font = '800 18px Tajawal, sans-serif';
+  ctx.fillText('تفاصيل البنود', W-P, 340);
+
+  let yPos = 382;
+  const rowH = 78;
+  list.forEach(u => {
+    const d = monthData[u.id]; if(!d) return;
+    const c = compute(u, d);
+    if(yPos > H - 130) return;
+
+    ctx.fillStyle = 'rgba(255,255,255,.04)';
+    roundRect(ctx, P, yPos, W-P*2, rowH-10, 16); ctx.fill();
+
+    // شريط اللون
+    ctx.fillStyle = u.color;
+    roundRect(ctx, W-P-6, yPos+10, 5, rowH-30, 3); ctx.fill();
+
+    // أيقونة
+    ctx.font = '28px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#fff';
+    ctx.fillText(u.icon, W-P-50, yPos+22);
+
+    // اسم
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#eef2ff';
+    ctx.font = '800 17px Tajawal, sans-serif';
+    ctx.fillText(u.name, W-P-84, yPos+14);
+
+    ctx.fillStyle = '#8b96b4';
+    ctx.font = '600 12.5px Tajawal, sans-serif';
+    const sub = c.status === 'none' ? 'لم يُستخدم'
+              : u.type === 'fixed' ? 'مبلغ ثابت'
+              : `استهلاك ${fmt(c.cons)} ${u.unit}`;
+    ctx.fillText(sub, W-P-84, yPos+38);
+
+    // مبلغ
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#fff';
+    ctx.font = '900 22px Tajawal, sans-serif';
+    ctx.fillText(fmt(c.total) + ' ' + CUR, P+28, yPos+16);
+
+    ctx.font = '700 12.5px Tajawal, sans-serif';
+    ctx.fillStyle = c.remain > 0 ? '#f87171' : '#6ee7a0';
+    ctx.fillText(c.remain > 0 ? 'متبقي ' + fmt(c.remain) : '✅ مسدد', P+28, yPos+44);
+
+    yPos += rowH;
+  });
+
+  // ─── التذييل ───
+  ctx.fillStyle = 'rgba(255,255,255,.08)';
+  ctx.fillRect(P, H-90, W-P*2, 1);
+
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#5a6480';
+  ctx.font = '700 13px Tajawal, sans-serif';
+  ctx.fillText('🏠 لوحة المرافق الذكية', W-P, H-70);
+
+  ctx.textAlign = 'left';
+  ctx.fillText(new Date().toLocaleString('ar-EG'), P, H-70);
+
+  return canvas;
+}
+function roundRect(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.arcTo(x+w, y, x+w, y+h, r);
+  ctx.arcTo(x+w, y+h, x, y+h, r);
+  ctx.arcTo(x, y+h, x, y, r);
+  ctx.arcTo(x, y, x+w, y, r);
+  ctx.closePath();
+}
+
+/* =========================================================
+   13) الأحداث العامة والمودالات
+   ========================================================= */
+document.querySelectorAll('[data-close]').forEach(btn => {
+  btn.onclick = () => {
+    const id = btn.dataset.close;
+    document.getElementById(id).classList.remove('on');
+  };
+});
+document.querySelectorAll('.modal').forEach(m => {
+  m.addEventListener('click', e => { if(e.target === m) m.classList.remove('on'); });
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') document.querySelectorAll('.modal.on').forEach(m => m.classList.remove('on'));
+});
+
+let toastTimer = null;
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 2200);
+}
+
+/* =========================================================
+   14) المصادقة + الإعدادات
+   ========================================================= */
+document.getElementById('settingsBtn').onclick = () => {
+  const session = sessionStorage.getItem(SESSION_KEY);
+  if(session === 'ok'){
+    openSettings();
+  } else {
+    document.getElementById('loginModal').classList.add('on');
+    setTimeout(() => document.getElementById('lgUser').focus(), 200);
+  }
+};
+document.getElementById('lgSubmit').onclick = () => {
+  const u = document.getElementById('lgUser').value.trim();
+  const p = document.getElementById('lgPass').value;
+  if(u === AUTH.user && p === AUTH.pass){
+    sessionStorage.setItem(SESSION_KEY, 'ok');
+    document.getElementById('loginModal').classList.remove('on');
+    document.getElementById('lgUser').value = '';
+    document.getElementById('lgPass').value = '';
+    toast('🔓 تم تسجيل الدخول');
+    openSettings();
+  } else {
+    toast('❌ بيانات الدخول خاطئة');
+    document.getElementById('lgPass').value = '';
+    document.getElementById('lgPass').focus();
+  }
+};
+document.getElementById('lgPass').addEventListener('keydown', e => {
+  if(e.key === 'Enter') document.getElementById('lgSubmit').click();
+});
+
+/* =========================================================
+   15) فتح/بناء الإعدادات (تصميم البطاقات الأصلي)
+   ========================================================= */
+function openSettings(){
+  document.getElementById('settingsModal').classList.add('on');
+  renderSettingsCards();
+}
+document.getElementById('stLogout').onclick = () => {
+  sessionStorage.removeItem(SESSION_KEY);
+  document.getElementById('settingsModal').classList.remove('on');
+  toast('🚪 تم تسجيل الخروج');
+};
+document.getElementById('stReset').onclick = () => {
+  if(!confirm('⚠️ سيتم حذف كل البيانات نهائياً. متأكد؟')) return;
+  localStorage.removeItem(STORE_KEY);
+  DB = loadDB();
+  renderDock();
+  renderSettingsCards();
+  if(ui.view === 'dash') renderDashboard();
+  if(ui.view === 'util') renderUtilityPage(ui.activeUtil);
+  if(ui.view === 'cal') renderCalendar();
+  toast('🗑️ تم تصفير كل البيانات');
+};
+document.getElementById('stAcc').onclick = () => {
+  const nu = prompt('اسم المستخدم الجديد:', AUTH.user);
+  if(nu === null) return;
+  const np = prompt('الرقم السري الجديد:', '');
+  if(np === null) return;
+  if(!nu.trim() || !np.trim()){ toast('⚠️ لا يمكن تركهما فارغين'); return; }
+  AUTH = { user: nu.trim(), pass: np };
+  saveAuth();
+  toast('👤 تم تحديث بيانات الحساب');
+};
+document.getElementById('stAddUtil').onclick = () => {
+  document.getElementById('addModal').classList.add('on');
+};
+
+function renderSettingsCards(){
+  const m = ensureMonth(ui.currentMonth);
+  document.getElementById('stMonthLbl').textContent = monthLabel(ui.currentMonth);
+
+  const wrap = document.getElementById('setCards');
+  wrap.innerHTML = DB.utilities.map(u => {
+    const d = m[u.id];
+    const c = compute(u, d);
+    let fields = '';
+    const f = (key, label, val) => `
+      <div class="set-field">
+        <label>${label}</label>
+        <input type="number" inputmode="decimal" step="any" data-f="${key}" value="${val||''}" placeholder="0">
+      </div>`;
+
+    if(u.type === 'reading'){
+      fields += f('prev','قراءة سابقة', d.prev);
+      fields += f('curr','قراءة حالية', d.curr);
+      fields += f('price', `سعر الوحدة`, d.price);
+      fields += f('fees', 'رسوم', d.fees);
+    } else if(u.type === 'quantity'){
+      fields += f('qty', `الكمية (${u.unit})`, d.qty);
+      fields += f('price', `سعر الوحدة`, d.price);
+      fields += f('fees', 'رسوم', d.fees);
+    } else {
+      fields += f('amount', `المبلغ المستحق`, d.amount);
+      fields += f('fees', 'رسوم إضافية', d.fees);
+    }
+    fields += f('paid', 'المدفوع', d.paid);
+
+    return `
+      <article class="set-card" data-util="${u.id}" style="--c:${u.color}">
+        <div class="set-head">
+          <div class="set-ico">${u.icon}</div>
+          <div class="set-name">
+            <h4>${u.name}</h4>
+            <small>${u.type === 'fixed' ? 'مبلغ ثابت' : u.type === 'reading' ? 'قراءة عدّاد' : 'كمية × سعر'} · ${u.unit}</small>
+          </div>
+          <button class="set-del" data-del="${u.id}" title="حذف المرفق">🗑️</button>
+        </div>
+        <div class="set-fields">${fields}</div>
+        <div class="set-stats">
+          <div class="stat"><span>الاستهلاك</span><b data-out="cons">${u.type==='fixed'?'—':fmt(c.cons)}</b></div>
+          <div class="stat"><span>الإجمالي</span><b data-out="total">${fmt(c.total)}</b></div>
+          <div class="stat"><span>المتبقي</span><b data-out="remain">${fmt(c.remain)}</b></div>
+        </div>
+        <div style="height:6px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden">
+          <i data-bar style="display:block;height:100%;width:${c.total>0?Math.min(100,(c.paid/c.total)*100):0}%;
+            background:${c.status==='paid'?'linear-gradient(90deg,#16a34a,#4ade80)':c.status==='partial'?'linear-gradient(90deg,#d97706,#fbbf24)':'linear-gradient(90deg,#b91c1c,#f87171)'}"></i>
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  // أحداث
+  wrap.oninput = e => {
+    const inp = e.target.closest('input[data-f]');
+    if(!inp) return;
+    const card = inp.closest('.set-card');
+    const id = card.dataset.util;
+    const f = inp.dataset.f;
+    const mm = ensureMonth(ui.currentMonth);
+    const d = mm[id];
+    d[f] = inp.value === '' ? 0 : parseFloat(inp.value);
+    if(f === 'price' || f === 'fees'){
+      DB.settings[id] = DB.settings[id] || {};
+      DB.settings[id][f] = d[f];
+    }
+    const u = DB.utilities.find(x=>x.id===id);
+    const c = compute(u, d);
+    card.querySelector('[data-out="cons"]').textContent = u.type === 'fixed' ? '—' : fmt(c.cons);
+    card.querySelector('[data-out="total"]').textContent = fmt(c.total);
+    card.querySelector('[data-out="remain"]').textContent = fmt(c.remain);
+    const bar = card.querySelector('[data-bar]');
+    bar.style.width = (c.total>0?Math.min(100,(c.paid/c.total)*100):0) + '%';
+    bar.style.background = c.status==='paid'?'linear-gradient(90deg,#16a34a,#4ade80)'
+                        : c.status==='partial'?'linear-gradient(90deg,#d97706,#fbbf24)'
+                        : 'linear-gradient(90deg,#b91c1c,#f87171)';
+    save();
+  };
+  wrap.onclick = e => {
+    const del = e.target.closest('[data-del]');
+    if(del){
+      const id = del.dataset.del;
+      const u = DB.utilities.find(x=>x.id===id);
+      if(!confirm(`حذف "${u.name}" من كل الشهور؟`)) return;
+      DB.utilities = DB.utilities.filter(x => x.id !== id);
+      Object.keys(DB.months).forEach(k => { if(DB.months[k][id]) delete DB.months[k][id]; });
+      delete DB.settings[id];
+      save();
+      renderDock();
+      renderSettingsCards();
+      toast('🗑️ تم حذف ' + u.name);
+    }
+  };
+}
+
+/* =========================================================
+   16) إضافة مرفق
+   ========================================================= */
+let amIconSel = '🔧', amColorSel = '#4f7cff';
+document.querySelectorAll('#amIcon button').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('#amIcon button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); amIconSel = b.dataset.i;
+  };
+});
+document.querySelectorAll('#amColor button').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('#amColor button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); amColorSel = b.dataset.c;
+  };
+});
+document.getElementById('amSave').onclick = () => {
+  const name = document.getElementById('amName').value.trim();
+  if(!name){ toast('⚠️ اكتب اسم المرفق'); return; }
+  const unit  = document.getElementById('amUnit').value.trim() || 'وحدة';
+  const type  = document.getElementById('amType').value;
+  const price = parseFloat(document.getElementById('amPrice').value) || 0;
+  addUtility({ name, icon: amIconSel, unit, type, price, color: amColorSel });
+  document.getElementById('amName').value = '';
+  document.getElementById('amPrice').value = 0;
+  document.getElementById('addModal').classList.remove('on');
+  toast('✅ تمت إضافة ' + name);
+};
+
+function addUtility(cfg){
+  if(!cfg || !cfg.name) return null;
+  const u = {
+    id: cfg.id || uid(),
+    name: cfg.name,
+    icon: cfg.icon || '🔧',
+    unit: cfg.unit || 'وحدة',
+    type: ['reading','quantity','fixed'].includes(cfg.type) ? cfg.type : 'fixed',
+    color: cfg.color || '#4f7cff',
+    price: +cfg.price || 0,
+    fees: +cfg.fees || 0
+  };
+  DB.utilities.push(u);
+  DB.settings[u.id] = { price: u.price, fees: u.fees };
+  Object.keys(DB.months).forEach(k => {
+    if(!DB.months[k][u.id]){
+      DB.months[k][u.id] = {
+        prev:0, curr:0, qty:0, amount:0,
+        price: u.price, fees: u.fees, paid: 0
+      };
+    }
+  });
+  ensureMonth(ui.currentMonth);
+  save();
+  renderDock();
+  if(document.getElementById('settingsModal').classList.contains('on')) renderSettingsCards();
+  if(ui.view === 'dash') renderDashboard();
+  return u;
+}
+window.addUtility = addUtility;
+
+/* =========================================================
+   17) الإقلاع
+   ========================================================= */
+ensureMonth(ui.currentMonth);
+renderDock();
+showView('dash');
+
+console.log('%c🏠 لوحة المرافق الأسطورية جاهزة!',
+  'background:linear-gradient(90deg,#4f7cff,#a78bfa);color:#fff;padding:6px 14px;border-radius:8px;font-weight:bold;font-size:13px');
+console.log('%c💡 إضافة مرفق برمجياً:', 'color:#8b96b4');
+console.log("   addUtility({ name:'صيانة', icon:'🔧', type:'fixed', color:'#ec4899' })");
+console.log('%c🔐 الافتراضي للحساب: admin / 1234', 'color:#4ade80');
+</script>
+</body>
+</html>
